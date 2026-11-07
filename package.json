@@ -1,0 +1,14 @@
+{
+  "name": "world-command",
+  "version": "2.0.0",
+  "description": "Simulador geopolítico de mundos ficticios con historia dinámica",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node tests/simulation.test.js"
+  }
+}
