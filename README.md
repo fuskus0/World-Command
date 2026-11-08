@@ -21,6 +21,16 @@ No hay `npm install` porque el proyecto no tiene dependencias. Para ejecutar la 
 npm test
 ```
 
+## Modos de juego
+
+Al abrir la página eliges:
+
+- **Modo Dios**: observas y creas el mundo (crear/eliminar países, revoluciones, eventos, población, economía, ciudades, capitales, personajes, tratados, guerras) y puedes **entrar en cualquier país** para gobernarlo («Gobernar este país»).
+- **Modo Político**: eres un personaje que vive en un país (uno existente o uno creado por ti con el editor: nombre, capital, religión, idioma, cultura, sistema, ideología, partido, bandera, monarca, lema; el himno se genera solo). Llegas al poder según el sistema: elecciones (fundar/unirse a un partido, campañas), sucesión o conspiración en monarquías (con regencia si eres menor), ascenso y golpe o herencia en dictaduras, consejo religioso en teocracias y consejo de ancianos en sistemas tribales. Si pierdes unas elecciones sigues como político.
+- El botón **→ Modo Dios / → Modo Político** de la barra superior cambia de perspectiva sin reiniciar el mundo ni perder al personaje.
+
+Cada país empieza con **una sola provincia**; el resto de la tierra está libre y se coloniza con el tiempo.
+
 ## Cómo se usa
 
 - **Velocidad** (barra superior): `II` pausa, x1…x100 años. Barra espaciadora = pausa/continuar.
@@ -45,6 +55,11 @@ npm test
 | Prensa | Medios nacionales con línea editorial y neutralidad; la agencia mundial (AMN) informa de forma neutral; titulares basados en hechos reales |
 | Banderas | Generador SVG procedural (franjas, cruces, símbolos, bordes), sin duplicados; cambian con revoluciones, uniones, etc. y se conserva el historial |
 | Reivindicaciones y sanciones | Reclamos territoriales que afectan a las relaciones y pueden acabar en guerra; embargos y rupturas, incluidas sanciones colectivas |
+| Batallas | Ejércitos abstractos que avanzan por el mapa, indicador de batalla con ventaja, ficha con bajas y resultado (victoria, derrota, retirada, empate), historial y resumen por guerra; las bajas afectan a capacidad militar, estabilidad, economía y opinión |
+| Identidad nacional | Bandera, lema, religión, idioma y cultura; himno generado por código (escuchar, pausar, descargar WAV); banderas en SVG/PNG; retratos en SVG |
+| Periódico | Edición anual (con animación) con las noticias más importantes; archivo de ediciones; atlas histórico y libro de historia |
+| Organización para la paz | Surge durante la partida, con sede, normas y asamblea que vota mediaciones; los gobiernos pueden ignorarlas |
+| Personajes y vida | Generales, científicos, artistas, deportistas y políticos con biografía y prestigio; migraciones, desastres, construcciones |
 | Cansancio de guerra | Crece con la duración y las derrotas; provoca protestas, caída de gobiernos y presión por la paz |
 
 ## Estructura
@@ -58,6 +73,10 @@ js/flags.js        Generador de banderas
 js/dynasty.js      Dinastías y sucesiones
 js/society.js      Opinión pública, reivindicaciones, sanciones
 js/press.js        Prensa y noticias
+js/anthem.js       Himnos y descargas
+js/battle.js       Batallas y ejércitos
+js/life.js         Personajes, periódico, atlas, organización para la paz
+js/career.js       Pantalla inicial, creador de país y carrera política
 js/diplomacy.js    Relaciones, tratados y organizaciones
 js/war.js          Guerras
 js/sim.js          Bucle de simulación, revoluciones, eventos
@@ -77,7 +96,10 @@ Sube el contenido de esta carpeta tal cual. Para GitHub Pages: *Settings → Pag
 
 ## Limitaciones conocidas
 
-Editor de fronteras, eventos personalizados en texto libre, ramas temporales, estados satélite y protectorados, y eventos con decisiones aún no están implementados.
+- Los himnos se descargan en WAV (no MP3); las banderas en SVG y PNG.
+- Editor de fronteras dibujadas a mano, ramas temporales, estados satélite y protectorados, y eventos con decisiones aún no están implementados.
+- Los retratos son figuras sencillas generadas por código.
+- En una página alojada dentro de otra aplicación las descargas pueden estar bloqueadas; funcionan abriendo `index.html` o con `npm start`.
 
 ## Licencia
 

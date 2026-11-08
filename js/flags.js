@@ -27,5 +27,5 @@ function flagSVG(f,w=22,h=14){if(!f||!f.c)return'';const[a,b,c]=f.c,r=(x,y,w,h,k
  case'nordic':s+=r(0,0,60,40,a)+r(14,0,10,40,b)+r(0,15,60,10,b)+r(17,0,4,40,c)+r(0,18,60,4,c);cx_=19;cb=c;break;case'tri2':s+=r(0,0,60,40,a)+`<polygon points="0,0 34,20 0,40" fill="${b}"/>`;cx_=11;k=.55;break;default:s+=r(0,0,60,40,a);cb=a}
  if(f.sym){const sf=cb===IV?c:IV;s+=symSVG(f.sym,cx_,20,k,sf,c===sf?a:c)}
  if(f.bd)s+=`<rect x="1.5" y="1.5" width="57" height="37" fill="none" stroke="${b}" stroke-width="3"/>`;return s+'</svg>'}
-function chFlag(c,why,mode,mx){c.fh.push({fl:c.fl,y0:c.flY,y1:S.y,why});c.fl=genFlag(mode,mx);c.flY=S.y;lg('flag','Nueva bandera: '+c.b,`${tt(c)} adopta una nueva bandera (${why}).`,c.id)}
+function chFlag(c,why,mode,mx){c.fh.push({fl:c.fl,y0:c.flY,y1:S.y,why});c.fl=genFlag(mode,mx);c.flY=S.y;chAnthem(c,why);lg('flag','Nueva bandera: '+c.b,`${tt(c)} adopta una nueva bandera (${why}).`,c.id)}
 function chGov(c,o,g,why){if(GF[o]!==GF[g])chFlag(c,why,GF[g]);if(monarchic(g)&&!monarchic(o))startDynasty(c,1,50);else if(!monarchic(g)&&monarchic(o))endReign(c,'fin de la monarquía')}

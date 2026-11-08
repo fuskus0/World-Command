@@ -1,5 +1,6 @@
 "use strict";
 /* ---------- prensa ---------- */
+let CUR=0;
 const PR={
 'guerra!':{a:{of:(a,d)=>`El Gobierno de ${a.b} defiende sus intereses territoriales frente a ${d.b}`,op:(a,d)=>`La oposición de ${a.b} cuestiona el rumbo bélico del Gobierno ante ${d.b}`,in:(a,d)=>`${a.b} y ${d.b} entran en guerra`},d:{of:(d,a)=>`${d.b} denuncia una agresión injustificada de ${a.b}`,op:(d,a)=>`Críticas en ${d.b}: el Gobierno no evitó el ataque de ${a.b}`,in:(d,a)=>`${d.b} se prepara para resistir la ofensiva de ${a.b}`},th:(a,d,x,T)=>rel(T.id,d.id)>35&&rel(T.id,a.id)<10?`Preocupación en ${T.b}: ${a.b} ataca a su socio ${d.b}`:`La tensión continental aumenta tras el inicio de las hostilidades entre ${a.b} y ${d.b}`},
 conq:{a:{of:(a,d,x)=>`Avance victorioso de ${a.b}: ${x.p} pasa a su control`,op:(a,d,x)=>`${a.b} ocupa ${x.p}, pero la oposición pide prudencia`,in:(a,d,x)=>`${a.b} toma ${x.p} a ${d.b}`},d:{of:(d,a,x)=>`${d.b} pierde ${x.p}: el Gobierno promete recuperarla`,op:(d,a,x)=>`Duras críticas al Gobierno de ${d.b} por la pérdida de ${x.p}`,in:(d,a,x)=>`Retroceso de ${d.b}: cae ${x.p}`}},
@@ -8,14 +9,15 @@ ind:{a:{of:(a,d)=>`${a.b} rechaza la secesión de ${d.b}`,op:(a,d)=>`Autonomista
 trat:{a:{of:(a,d)=>`${a.b} sella un acuerdo histórico con ${d.b}`,op:(a,d)=>`La oposición de ${a.b} recela del pacto con ${d.b}`,in:(a,d)=>`${a.b} y ${d.b} refuerzan sus lazos`},d:{of:(d,a)=>`${d.b} y ${a.b}: una alianza para la prosperidad`,op:(d,a)=>`Dudas en ${d.b} sobre el pacto con ${a.b}`,in:(d,a)=>`${d.b} firma con ${a.b}`},th:(a,d,x,T)=>rel(T.id,a.id)<-30||rel(T.id,d.id)<-30?`Inquietud en ${T.b} por el nuevo pacto entre ${a.b} y ${d.b}`:`Nuevo equilibrio diplomático: ${a.b} y ${d.b} firman un tratado`},
 san:{a:{of:(a,d)=>`${a.b} responde con firmeza: sanciones contra ${d.b}`,op:(a,d)=>`Empresarios de ${a.b} temen el coste de las sanciones a ${d.b}`,in:(a,d)=>`${a.b} impone sanciones a ${d.b}`},d:{of:(d,a)=>`${d.b} denuncia un bloqueo injusto de ${a.b}`,op:(d,a)=>`${d.b} sufre las sanciones de ${a.b}; la oposición culpa al Gobierno`,in:(d,a)=>`La economía de ${d.b} se resiente por las sanciones de ${a.b}`},th:(a,d)=>`Las sanciones entre ${a.b} y ${d.b} amenazan el comercio regional`},
 reiv:{a:{of:(a,d,x)=>`${a.b} reivindica ${x.p}: forma parte de su historia`,op:(a,d,x)=>`La oposición de ${a.b} ve oportunismo en el reclamo de ${x.p}`,in:(a,d,x)=>`${a.b} reclama ${x.p} a ${d.b}`},d:{of:(d,a,x)=>`${d.b} rechaza las pretensiones de ${a.b} sobre ${x.p}`,op:(d,a,x)=>`Preocupación en ${x.p} por el reclamo de ${a.b}`,in:(d,a,x)=>`${d.b} rechaza el reclamo de ${a.b} sobre ${x.p}`}},
+bat:{a:{of:(a,d,x)=>`${x.bn}: el ejército de ${a.b} ${x.rs}`,op:(a,d,x)=>`${x.bn}: ${x.bj} bajas; la oposición de ${a.b} pide explicaciones`,in:(a,d,x)=>`${x.bn} deja unas ${x.bj} bajas`},d:{of:(d,a,x)=>`${x.bn}: ${d.b} ${x.rsd}`,op:(d,a,x)=>`${x.bn}: ${d.b} llora a sus caídos (${x.bj} bajas entre ambos)`,in:(d,a,x)=>`${x.bn}: ${d.b} ${x.rsd} ante ${a.b}`}},
 rev:{s:{of:c=>`El Gobierno de ${c.b} promete restablecer el orden`,op:c=>`El pueblo de ${c.b} derriba el antiguo régimen`,in:c=>`Convulsión política en ${c.b}`}},
 elec:{s:{of:c=>`El Gobierno de ${c.b} destaca la alta participación`,op:c=>`La oposición de ${c.b} denuncia irregularidades en las urnas`,in:(c,x)=>`${c.b} vota: ${x.d}`}},
 suc:{s:{of:c=>`${c.b} jura lealtad al nuevo soberano`,op:c=>`Dudas sobre la legitimidad del nuevo reinado en ${c.b}`,in:c=>`Cambio en el trono de ${c.b}`}},
 evt:{s:{of:(c,x)=>`El Gobierno de ${c.b} asegura controlar la situación: ${x.t}`,op:(c,x)=>`La oposición acusa al Gobierno de ${c.b} de mala gestión: ${x.t}`,in:(c,x)=>`${c.b}: ${x.t}`}},
 prot:{s:{of:c=>`${c.b}: el Gobierno minimiza las protestas`,op:c=>`Crece la indignación popular en ${c.b}`,in:c=>`Protestas en ${c.b}`}}};
-const AMN='Agencia Mundial de Noticias (AMN)';
-function press(ty,t,d,cid,x){const P=PR[ty];if(!P||(ty=='conq'&&R()<.6)||(ty=='evt'&&R()<.3))return;x=Object.assign({t,d},x||{});
- const push=(o,cc,h)=>{S.nz.push({y:S.y,m:S.m,ty,on:o?o.n:AMN,oc:cc?cc.id:0,nu:o?o.neu:98,st:o?o.st:'',h,b:o?'':d});if(S.nz.length>900)S.nz.shift()};push(null,null,t);
+const AMN='Agencia Mundial de Noticias (AMN)';PR.cie=PR.cul=PR.des=PR.con=PR.esc=PR.mig=PR.dep=PR.mue=PR.evt;
+function press(ty,t,d,cid,x){const P=PR[ty];if(!P||(ty=='conq'&&R()<.6)||(ty=='evt'&&R()<.3)||(ty=='bat'&&!(x&&x.big)))return;x=Object.assign({t,d},x||{});
+ const push=(o,cc,h)=>{S.nz.push({l:CUR,y:S.y,m:S.m,ty,on:o?o.n:AMN,oc:cc?cc.id:0,nu:o?o.neu:98,st:o?o.st:'',h,b:o?'':d});if(S.nz.length>900)S.nz.shift()};push(null,null,t);
  if(P.a&&x.a&&x.d){for(const[cc,fn,b]of[[x.a,P.a,x.d],[x.d,P.d,x.a]])if(cc.alive&&cc.md&&fn)for(const o of cc.md)if(fn[o.st])push(o,cc,fn[o.st](cc,b,x));
   const T=alive().filter(k=>k!==x.a&&k!==x.d&&k.md);if(T.length&&P.th){const k=pick(T);push(k.md[0],k,P.th(x.a,x.d,x,k))}}
  else if(P.s&&cid&&C(cid)&&C(cid).md)for(const o of C(cid).md)if(P.s[o.st])push(o,C(cid),P.s[o.st](C(cid),x))}

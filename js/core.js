@@ -25,6 +25,6 @@ function hsl(h,s,l){s/=100;l/=100;const f=n=>{const k=(n+h/30)%12;return Math.ro
 const rgb=c=>`rgb(${c[0]},${c[1]},${c[2]})`;
 function tt(c){return(c.np>=12&&['mab','mco','dmi'].includes(c.gov)?'Imperio de ':{mab:'Reino de ',mco:'Reino de ',tri:'Confederación de ',teo:'Estado Teocrático de ',soc:'República Socialista de ',dmi:'Junta Militar de '}[c.gov]||'República de ')+c.b}
 const flag=c=>flagSVG(c.fl,22,14),flagOld=c=>`<i class="fl" style="background:linear-gradient(${c.f[2]}deg,${rgb(c.f[0])} 33%,${rgb(c.f[1])} 33% 66%,${rgb(c.col)} 66%)"></i>`;
-function lg(ty,t,d,c,x){S.log.push({y:S.y,m:S.m,ty,t,d,c});press(ty,t,d,c,x);if(S.log.length>3000)S.log.shift();if(['guerra!','paz','rev','ind'].includes(ty))ban(t)}
+function lg(ty,t,d,c,x){const id=S.lid=(S.lid||0)+1;S.log.push({id,y:S.y,m:S.m,ty,t,d,c,pr:x?[x.a&&x.a.b,x.d&&x.d.b,x.who].filter(Boolean):[]});CUR=id;press(ty,t,d,c,x);if(S.log.length>3000)S.log.shift();if(['guerra!','paz','rev','ind'].includes(ty))ban(t)}
 function ban(h,ms=4500){const b=$('bn');b.innerHTML=h;b.style.display='block';clearTimeout(ban.t);ban.t=setTimeout(()=>b.style.display='none',ms)}
 function modal(h){$('md').innerHTML='<button onclick="$(\'md\').style.display=\'none\'" style="float:right">Cerrar</button>'+h;$('md').style.display='block'}
