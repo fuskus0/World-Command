@@ -20,8 +20,7 @@ function succ(c,old,cause){endReign(c,cause=='abdica'?'abdicación':'fallecimien
   lg('suc',(cause=='abdica'?'Abdica ':'Muere ')+n0,`${n0} ${verb} tras ${yrs} años de reinado. Le sucede ${rl}, ${mname(q)}.`,c.id);return}
  const r=R(),why=`Sin heredero claro tras ${cause=='abdica'?'la abdicación':'la muerte'} de ${n0}`;c.st=cl(c.st-15);
  if(r<.45){const f=startDynasty(c,1,35);lg('suc','Cambio de dinastía en '+c.b,`${why}: la nobleza proclama a ${mname(f)}, de la Casa ${c.dyns[c.dyn].sn}.`,c.id)}
- else if(r<.7&&c.np>=3){const ps=prov(c).filter(p=>p.id!==c.cap).sort((a,b)=>a.st-b.st).slice(0,Math.max(1,Math.floor(c.np*.4))),nc=secede(c,ps.map(p=>p.id),0);nc.gov=c.gov;nc.b=c.b+' del Este';startDynasty(nc,1,40);startDynasty(c,1,40);
-  lg('suc','Crisis sucesoria en '+c.b,`${why}: dos pretendientes se disputan el trono.`,c.id);declare(c,nc,'Guerra de sucesión',1)}
+ else if(r<.7&&c.np>=5){const nc=startSecession(c,Math.max(3,Math.floor(c.np*.4)),'sucesión',{force:1});if(nc){nc.gov=c.gov;nc.b=c.b+' del Este';startDynasty(nc,1,40);startDynasty(c,1,40);lg('suc','Crisis sucesoria en '+c.b,`${why}: dos pretendientes se disputan el trono.`,c.id);declare(c,nc,'Guerra de sucesión',1)}else{const f=startDynasty(c,1,35);lg('suc','Cambio de dinastía en '+c.b,`${why}: la nobleza proclama a ${mname(f)}.`,c.id)}}
  else if(r<.9){loseP(c,'proclamación de república');setGov(c,'rpa','Proclamación de república');lg('suc','Fin de la monarquía en '+c.b,`${why}: el parlamento proclama la república.`,c.id)}
  else{const f=startDynasty(c,1,45);c.st=cl(c.st-10);lg('suc','Regencia en '+c.b,`${why}: un consejo de regencia designa a ${mname(f)}.`,c.id)}}
 function dynYear(c){if(!monarchic(c.gov)||!c.alive)return;if(!c.dyns||!curMon(c))startDynasty(c,1,55);const d=c.dyns[c.dyn];

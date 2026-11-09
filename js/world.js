@@ -1,7 +1,7 @@
 "use strict";
 /* ---------- generación ---------- */
 function newWorld(seed){
- S={seed,rs:hs(seed),y:1000,m:0,provs:[],C:{},wars:[],log:[],snaps:[],nid:1,nw:1,player:null,truce:{},bn:{},rel:{},tr:[],nt:1,nz:[],sa:[],cl:[],mid:1,bt:[],bh:[],wh:[],ch:[],pp:[],res:[],mode:null,pl:null};fades={};
+ S={seed,rs:hs(seed),y:1000,m:0,provs:[],C:{},wars:[],log:[],snaps:[],nid:1,nw:1,player:null,truce:{},bn:{},rel:{},tr:[],nt:1,nz:[],sa:[],cl:[],mid:1,tw:{},dm:[],cdd:{},inb:[],bt:[],bh:[],wh:[],ch:[],pp:[],res:[],mode:null,pl:null};fades={};
  S.world=nm()+'ia';const names=new Set();let land;
  do{const ph=[R()*6,R()*6,R()*6,R()*6];S.provs=[];land=0;
   for(let gy=0;gy<GY;gy++)for(let gx=0;gx<GX;gx++){const x=(gx+.15+R()*.7)*CW,y=(gy+.15+R()*.7)*CH,dx=(x/W-.5)*2,dy=(y/H-.5)*2;
@@ -27,11 +27,11 @@ function recount(){const L=alive();L.forEach(c=>{c.np=0;c.pop=0;c.pw=0;c.cx=0;c.
  for(const p of S.provs){const c=p.o!=null&&C(p.o);if(!c||!c.alive)continue;c.np++;c.pop+=p.pop;c.pw+=p.pop*(.5+p.eco/100)/1e4;c.cx+=p.x;c.cy+=p.y;c.nc+=p.cities.length;for(const q of p.nb){const o=S.provs[q].o;if(o!=null&&o!==c.id)c.nbs.add(o)}}
  for(const c of L){c.cx/=c.np||1;c.cy/=c.np||1;c.pw*=(c.mil??100)/100*(.5+c.st/100)*(c.pers=='Imperialista'||c.pers=='Expansionista'?1.15:1)}}
 const atWar=c=>S.wars.filter(w=>w.a.includes(c.id)||w.d.includes(c.id)),nbC=c=>{const s=new Set;for(const p of prov(c))for(const q of p.nb){const o=S.provs[q].o;if(o!=null&&o!==c.id&&C(o).alive)s.add(o)}return[...s]};
-function assign(p,cid){(p.oh=p.oh||[]).push({o:cid,y:S.y});if(p.oh.length>12)p.oh.shift();if(p.o!=null&&p.o!==cid){fades[p.id]={f:C(p.o).col,t:0};p.ex=[...(p.ex||[]).filter(x=>x!==p.o),p.o].slice(-3)}p.o=cid;dirty=1}
+function assign(p,cid){if(p.o!==cid)p.au=0;(p.oh=p.oh||[]).push({o:cid,y:S.y});if(p.oh.length>12)p.oh.shift();if(p.o!=null&&p.o!==cid){fades[p.id]={f:C(p.o).col,t:0};p.ex=[...(p.ex||[]).filter(x=>x!==p.o),p.o].slice(-3)}p.o=cid;dirty=1}
 function setGov(c,g,why){const o=c.gov;c.gov=g;c.ps=null;if(GOV[g][1])c.nx=abs()+6;c.ld=ldn();chGov(c,o,g,why);lg('gob',why+': '+tt(c),`${c.b} pasa de ${GOV[o][0]} a ${GOV[g][0]}.`,c.id)}
 function killC(c,by,msg=1){c.alive=0;if(S.pl&&S.pl.c===c.id){S.pl.gov=0;S.pl.out=1}for(const k in S.rel){const q=k.split('-');if(+q[0]===c.id||+q[1]===c.id)delete S.rel[k]}S.cl.forEach(k=>{if(k.by===c.id)k.act=0});S.sa.forEach(q=>{if(q.by===c.id||q.to===c.id)q.act=0});c.dy=S.y;c.dm=S.m;for(const t of S.tr)if(t.on&&t.ms.includes(c.id)){t.ms=t.ms.filter(i=>i!==c.id);if(t.ms.length<2){t.on=0;t.end={y:S.y,m:S.m}}}for(const w of S.wars.slice()){w.a=w.a.filter(i=>i!==c.id);w.d=w.d.filter(i=>i!==c.id)}
  if(msg)lg('fin','Desaparece '+tt(c),`${tt(c)} deja de existir${by?' tras ser absorbido por '+tt(by):''}. Su ficha histórica se conserva.`,c.id);if(c.id===S.player){S.player=null;ban('EL GOBIERNO HA CAÍDO: vuelves a ser observador')}}
-function secede(c,ids,war){const ps=ids.map(i=>S.provs[i]);const nc=newC({b:nm(),gov:pick(['tri','rpa','soc','mab','dmi']),cap:ps[0].id});ps.forEach(p=>{assign(p,nc.id);p.st=50;p.cu=nc.cul});nc.cul=ps[0].cu;nc.st=50;
+function secede(c,ids,war){const ps=ids.map(i=>S.provs[i]);const nc=newC({b:nm(),gov:pick(['tri','rpa','soc','mab','dmi']),cap:ps[0].id});ps.forEach(p=>{assign(p,nc.id);p.st=50;pev(p,'Independencia de '+c.b)});nc.cul=ps[0].cu;nc.cap=ps.slice().sort((a,b)=>b.pop-a.pop)[0].id;S.provs[nc.cap].cities[0].cap=1;nc.st=50;
  if(!S.provs[c.cap]||S.provs[c.cap].o!==c.id){const r=prov(c).sort((a,b)=>b.pop-a.pop)[0];if(r)c.cap=r.id}
  addRel(nc.id,c.id,-30);recount();lg('ind','Independencia: '+tt(nc),`${ps.map(p=>p.n).join(', ')} se separa(n) de ${tt(c)} y funda(n) ${tt(nc)}.`,nc.id,{a:c,d:nc});if(war&&c.np>0)declare(c,nc,'Guerra de independencia',1);return nc}
 function genP(c){c.ps=[];const u=new Set;while(c.ps.length<5){const a=pick(PA),b=pick(PB);if(u.has(a+b))continue;u.add(a+b);c.ps.push({n:a+' '+b,s:(a[0]+b[0]+(R()<.5?b[1].toUpperCase():'')),id:R()*IDEO.length|0,col:hsl(R()*360,50,45),po:6+R()*20,ld:ldn(),v:0,se:0,w:0})}}

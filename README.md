@@ -31,6 +31,14 @@ Al abrir la página eliges:
 
 Cada país empieza con **una sola provincia**; el resto de la tierra está libre y se coloniza con el tiempo.
 
+## Diplomacia interactiva
+
+Si gobiernas un país, haz clic en cualquier otro país del mapa y pulsa **Interactuar / Relaciones diplomáticas**: ficha (gobierno, jefe, relación, estado diplomático, confianza, organizaciones, guerras), acciones para mejorar relaciones (mensaje, visita, cooperación, ayuda económica) o generar tensiones (advertencias, reclamaciones, sanciones, ruptura de tratados, retirar embajador, guerra) y **negociaciones con diálogo** (libre comercio, amistad, no agresión, defensa, alianza, cooperación, migración, libre circulación, unión política, adhesión). La respuesta depende de la relación, la confianza, la ideología, la personalidad, los tratados rotos, las reivindicaciones y las sanciones; pueden aceptar, pedir condiciones, contraofertar, pedir tiempo, rechazar o romper. Los tratados tienen duración (1, 5, 10, 20 años o indefinida), expiran, se renuevan o se denuncian (**Tratados**), y los otros gobiernos te envían propuestas y exigencias (**Mensajes**). Los acuerdos modifican la economía, la migración y las relaciones.
+
+## Territorio e historia
+
+Las guerras civiles y las independencias crean regiones **conectadas y con motivo** (identidad cultural, antiguos países, inestabilidad), con periodos de enfriamiento; la mayoría terminan con victoria del gobierno, autonomía regional o victoria rebelde, y solo algunas dividen el país. El juego revisa las fronteras cada año (huecos, exclaves, micronaciones antiguas). Cada provincia conserva su historial de propietarios y acontecimientos (botón **Historia del territorio**), los países desaparecidos permanecen en la **memoria histórica** (Atlas) con su bandera, y pueden surgir movimientos que restauren el antiguo país.
+
 ## Cómo se usa
 
 - **Velocidad** (barra superior): `II` pausa, x1…x100 años. Barra espaciadora = pausa/continuar.
@@ -77,6 +85,8 @@ js/anthem.js       Himnos y descargas
 js/battle.js       Batallas y ejércitos
 js/life.js         Personajes, periódico, atlas, organización para la paz
 js/career.js       Pantalla inicial, creador de país y carrera política
+js/territory.js    Fronteras, guerras civiles contenidas y memoria histórica
+js/negotiation.js  Negociaciones, tratados con duración y mensajes
 js/diplomacy.js    Relaciones, tratados y organizaciones
 js/war.js          Guerras
 js/sim.js          Bucle de simulación, revoluciones, eventos

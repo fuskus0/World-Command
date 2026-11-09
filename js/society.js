@@ -19,7 +19,7 @@ function claimYear(){const L=alive();
   else if(k.t>80&&r<-40&&R()<.15&&k.by!==S.player&&S.wars.length<Math.max(1,L.length/5))declare(A,B,'Reivindicación territorial: '+p.n)}}
 /* sanciones */
 const sanBlock=(a,b)=>S.sa.some(s=>s.act&&(s.by===a&&s.to===b||s.by===b&&s.to===a));
-function impose(by,to,ty,why,coll){if(by===to||S.sa.some(s=>s.act&&s.by===by&&s.to===to))return;const A=C(by),B=C(to);if(!A.alive||!B.alive)return;S.sa.push({by,to,ty,why,coll:coll||0,y:S.y,m:S.m,act:1});addRel(by,to,-12);
+function impose(by,to,ty,why,coll){if(by===to||S.sa.some(s=>s.act&&s.by===by&&s.to===to))return;const A=C(by),B=C(to);if(!A.alive||!B.alive)return;S.sa.push({by,to,ty,why,coll:coll||0,y:S.y,m:S.m,act:1});addRel(by,to,-12);addTrust(to,by,-10);
  if(ty=='dip')for(const t of S.tr.filter(t=>t.on&&t.ms.includes(by)&&t.ms.includes(to)))leave(A,t,'rompe con '+B.b);
  const o=coll&&S.tr.find(t=>t.id===coll);lg('san',(ty=='dip'?'Ruptura diplomática: ':'Sanciones: ')+A.b+' → '+B.b,`${tt(A)} ${ty=='dip'?'rompe relaciones con':'impone un embargo a'} ${tt(B)} (${why}).${o?' Sanción colectiva de '+o.n+'.':''}`,by,{a:A,d:B})}
 function sanctionRule(agg,vic,why){for(const X of alive()){if(X===agg)continue;const isV=X===vic;if((isV||rel(X.id,vic.id)>30)&&rel(X.id,agg.id)<-25&&R()<(isV?.5:.2))impose(X.id,agg.id,R()<.3?'dip':'emb',why)}
